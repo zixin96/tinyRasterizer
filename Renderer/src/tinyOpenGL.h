@@ -1,18 +1,17 @@
 ﻿#pragma once
 #include <glm/glm.hpp>
 
-extern glm::mat4 ModelView;
-extern glm::mat4 Viewport;
-extern glm::mat4 Projection;
+// from world to camera space (equivalent to glm::lookAt)
+void lookat(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& tmp = glm::vec3(0.f, 1.f, 0.f));
+// from camera to canvas space
+void projection(float coeff = 0.f); // coeff = -1/c
 
 void viewport(int x, int y, int w, int h);
-void projection(float coeff = 0.f); // coeff = -1/c
-void lookat(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 
 struct IShader
 {
 	virtual ~IShader();
-	virtual glm::vec4 vertex(int iface, int nthvert) = 0;
+	virtual void vertex(const int iface, const int nthvert, glm::vec4& gl_Position) = 0;
 	virtual bool fragment(const glm::vec3& bar, glm::vec4& color) = 0;
 };
 
