@@ -22,8 +22,7 @@ struct Shader : IShader
 	// triangle vertex: v1, v2, v3 has the following uv structure
 	// [ v1.u v2.u v3.u ]
 	// [ v1.v v2.v v3.v ]
-	// glm::mat3x2 varying_uv;
-
+	glm::mat3x2 varying_uv;
 	glm::vec3 varying_intensity;
 
 	Shader(const Model& m) : model(m)
@@ -32,18 +31,25 @@ struct Shader : IShader
 
 	virtual void vertex(const Vertex& v, const int nthVert, glm::vec4& gl_Position)
 	{
-		// varying_uv[nthVert] = v.TexCoords;
+		varying_uv[nthVert] = v.TexCoords;
 		varying_intensity[nthVert] = std::max(0.f, glm::dot(v.Normal, glm::normalize(light_dir)));
 		// shall we normalize normal and light_dir? 
 		gl_Position = Projection * ModelView * glm::vec4(v.Position, 1.f);
 	}
 
-	virtual bool fragment(const glm::vec4& bar, TGAColor& gl_FragColor)
+	virtual bool fragment(const glm::vec4& bar, TGAColor& gl_FragColor, float r0z, float r1z, float r2z)
 	{
 		// compute interpolated attributes
-		float pixelDepth = bar.w;
-		float intensity = glm::dot(varying_intensity, glm::vec3(bar)) * pixelDepth;
-		gl_FragColor = TGAColor(255, 255, 255) * intensity;
+		float intensity = bar.w * (varying_intensity[0] * r0z * bar[0]
+			+ varying_intensity[1] * r1z * bar[1]
+			+ varying_intensity[2] * r2z * bar[2]);
+
+		glm::vec2 uv = bar.w * (varying_uv[0] * r0z * bar[0]
+			+ varying_uv[1] * r1z * bar[1]
+			+ varying_uv[2] * r2z * bar[2]);
+
+		TGAColor c = sample2D(model.textures_loaded[0].data, uv);
+		gl_FragColor = c * intensity;
 		return false; // the pixel is not discarded
 	}
 };
@@ -86,6 +92,6 @@ int main()
 		}
 	}
 
-	framebuffer.write_tga_file("output2.tga");
+	framebuffer.write_tga_file("1.tga", false);
 	return 0;
 }

@@ -5,6 +5,8 @@
 
 #include <string>
 #include <vector>
+
+#include "tgaimage.h"
 using std::string;
 using std::vector;
 
@@ -35,9 +37,9 @@ struct Vertex
 struct Texture
 {
 	// unsigned int id;
-	unsigned char* data;
-	string type; // "diffuse" or "specular"? 
-	string path; // we store the path of the texture to compare with other textures;
+	TGAImage data{};
+	string type{}; // "diffuse" or "specular"? 
+	string path{}; // we store the path of the texture to compare with other textures;
 };
 
 // a mesh represents a single drawable entity

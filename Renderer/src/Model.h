@@ -3,16 +3,12 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <string>
-#include <iostream>
 #include <vector>
 
 #include "Mesh.h"
 
 // loads a texture (with stb_image.h) and return the texture ID
 // unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
-
-// loads a texture (with stb_image.h) and return the texture ID
-unsigned char* TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
 // a model that contains multiple meshes, possibly with multiple textures. 
 class Model

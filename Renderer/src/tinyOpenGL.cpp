@@ -77,8 +77,8 @@ static float edgeFunction(const glm::vec3& a, const glm::vec3& b, const glm::vec
 
 void triangle(glm::vec4* hcp, IShader& shader, TGAImage& image, std::vector<float>& zbuffer)
 {
-	uint32_t imageWidth = image.get_width();
-	uint32_t imageHeight = image.get_height();
+	uint32_t imageWidth = image.width();
+	uint32_t imageHeight = image.height();
 	// clipping (ignore)
 	// perspective divide 
 	glm::vec3 ndc[3] = {
@@ -148,7 +148,7 @@ void triangle(glm::vec4* hcp, IShader& shader, TGAImage& image, std::vector<floa
 				{
 					TGAColor color;
 					glm::vec4 baryCoordAndPixeldepth = glm::vec4(w0, w1, w2, z);
-					if (shader.fragment(baryCoordAndPixeldepth, color))
+					if (shader.fragment(baryCoordAndPixeldepth, color, raster[0].z, raster[1].z, raster[2].z))
 					{
 						// fragment shader can discard this pixel
 						continue;

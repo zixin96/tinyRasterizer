@@ -13,7 +13,12 @@ struct IShader
 {
 	virtual ~IShader();
 	virtual void vertex(const Vertex& v, const int nthVert, glm::vec4& gl_Position) = 0;
-	virtual bool fragment(const glm::vec4& bar, TGAColor& gl_FragColor) = 0;
+	virtual bool fragment(const glm::vec4& bar, TGAColor& gl_FragColor, float r0z, float r1z, float r2z) = 0;
+
+	static TGAColor sample2D(const TGAImage& img, glm::vec2& uvf)
+	{
+		return img.get(uvf[0] * img.width(), uvf[1] * img.height());
+	}
 };
 
 // void triangle(glm::vec4 * pts, IShader & shader, TGAImage & image, TGAImage & zbuffer);

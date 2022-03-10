@@ -1,20 +1,14 @@
 ﻿#include "Model.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
 #include <stb_image/stb_image.h>
 #include <assimp/postprocess.h>
+
+#include "tgaimage.h"
 using std::cout;
 using std::endl;
 
-unsigned char* TextureFromFile(const char* path, const string& directory, bool gamma)
-{
-	string filename = string(path);
-	filename = directory + '/' + filename;
-
-	int width, height, nrComponents;
-	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-	return data;
-}
 
 Model::Model(string const& path, bool gamma) : gammaCorrection(gamma)
 {
@@ -23,10 +17,6 @@ Model::Model(string const& path, bool gamma) : gammaCorrection(gamma)
 
 Model::~Model()
 {
-	for (auto& tex : textures_loaded)
-	{
-		stbi_image_free(tex.data);
-	}
 }
 
 
@@ -208,7 +198,11 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 			// if texture hasn't been loaded already, load it
 			Texture texture;
 			// texture.id = TextureFromFile(str.C_Str(), this->directory);
-			texture.data = TextureFromFile(str.C_Str(), this->directory);
+			string filename = string(str.C_Str());
+			filename = directory + '/' + filename;
+			cout << "texture file " << filename << " loading " << (texture.data.read_tga_file(filename)
+				                                                       ? "ok"
+				                                                       : "failed") << endl;
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);
