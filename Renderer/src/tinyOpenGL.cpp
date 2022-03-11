@@ -3,7 +3,7 @@
 #include <glm/ext/scalar_constants.hpp>
 
 
-glm::mat4 ModelView;
+glm::mat4 View;
 glm::mat4 Projection;
 
 IShader::~IShader()
@@ -33,7 +33,7 @@ void lookat(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& tmp)
 		{eye.x, eye.y, eye.z, 1.f},
 	};
 
-	ModelView = glm::inverse(camToWorld);
+	View = glm::inverse(camToWorld);
 }
 
 

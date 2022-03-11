@@ -12,7 +12,6 @@ void projection(const float& fovy, const float& aspect, const float& near, const
 struct IShader
 {
 	virtual ~IShader();
-	virtual void vertex(const Vertex& v, const int nthVert, glm::vec4& gl_Position) = 0;
 	virtual bool fragment(const glm::vec4& bar, TGAColor& gl_FragColor, float r0z, float r1z, float r2z) = 0;
 
 	static TGAColor sample2D(const TGAImage& img, glm::vec2& uvf)
