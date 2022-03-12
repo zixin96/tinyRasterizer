@@ -6,7 +6,7 @@
 
 // from world to camera space (equivalent to glm::lookAt)
 void lookat(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& tmp = glm::vec3(0.f, 1.f, 0.f));
-// from camera to homogeneous clip space 
+// from camera to homogeneous clip space (equivalent to glm::perspective) 
 void projection(const float& fovy, const float& aspect, const float& near, const float& far);
 
 struct IShader
@@ -20,5 +20,8 @@ struct IShader
 	}
 };
 
-// void triangle(glm::vec4 * pts, IShader & shader, TGAImage & image, TGAImage & zbuffer);
+// this function 
+// 1) covers the geometric shape assembly process (Primitive Assembly): note we only support gl.TRIANGLES 
+// 2) covers the rasterization process (Rasterizer): the geometric shape assembled in the geometric assembly process is converted into fragments  
+// 3) calls fragment shader
 void triangle(glm::vec4* hcp, IShader& shader, TGAImage& image, std::vector<float>& zbuffer);
