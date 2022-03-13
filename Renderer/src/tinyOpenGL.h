@@ -3,12 +3,15 @@
 
 #include "Mesh.h"
 #include <tgaimage.h>
+#include <unordered_map>
+
 
 // from world to camera space (equivalent to glm::lookAt)
 void lookat(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& tmp = glm::vec3(0.f, 1.f, 0.f));
 // from camera to homogeneous clip space (equivalent to glm::perspective) 
 void projection(const float& fovy, const float& aspect, const float& near, const float& far);
 
+// IShader encapsulates tinyOpenGL System 
 struct IShader
 {
 	virtual ~IShader();
@@ -18,6 +21,17 @@ struct IShader
 	{
 		return img.get(uvf[0] * img.width(), uvf[1] * img.height());
 	}
+
+	// textUnit: specifies the texture unit number
+	// uvf: specifies the texture coordinates
+	// return: the texel color for the coordinates
+	static TGAColor texture2D(unsigned textUnit, glm::vec2& uvf)
+	{
+		const TGAImage& img = tinyOpenGLTextures[textUnit];
+		return img.get(uvf[0] * img.width(), uvf[1] * img.height());
+	}
+
+	static std::unordered_map<unsigned, TGAImage> tinyOpenGLTextures;
 };
 
 // this function 

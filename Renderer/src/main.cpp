@@ -54,6 +54,7 @@ struct Shader : IShader
 };
 #endif
 
+
 struct Shader : IShader
 {
 	const Mesh& mesh;
@@ -64,6 +65,9 @@ struct Shader : IShader
 	glm::mat4 u_View;
 	glm::mat4 u_Projection;
 	glm::vec3 u_LightDir;
+
+	// texture unit number
+	unsigned texture_diffuse1;
 
 	// all varying attributes are written by the vertex shader, read by the fragment shader
 
