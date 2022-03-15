@@ -170,6 +170,7 @@ int main()
 	TGAImage framebuffer(imageWidth, imageHeight, TGAImage::RGB);
 	std::vector<float> zbuffer(imageWidth * imageHeight, std::numeric_limits<float>::max());
 
+
 	// iterate through all meshes
 	for (size_t m = 0; m < ourModel.meshes.size(); m++)
 	{
